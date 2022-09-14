@@ -1,0 +1,47 @@
+// Copyright (c) 2022 Perets Dmytro
+// Author: Perets Dmytro <imperator999mcpe@gmail.com>
+//
+// Personal usage is allowed only if this comment was not changed or deleted.
+// Commercial usage must be agreed with the author of this comment.
+
+
+#include "perceptron.hpp"
+
+
+namespace neural
+{
+	perceptron::perceptron(
+			const std::initializer_list<size_t>& sizes, neuron_t min, neuron_t max,
+			neural_function activation_function, neural_function deactivation_function
+	) : activation_function(activation_function), deactivation_function(deactivation_function)
+	{
+		assert(sizes.size() > 0);
+		
+		inputs_size = *sizes.begin();
+		
+		size_t prev = inputs_size;
+		for (auto it = sizes.begin() + 1; it != sizes.end(); ++it)
+		{
+			layers.emplace_back(prev, *it, min, max);
+			prev = *it;
+		}
+	}
+	
+	std::vector<neuron_t> perceptron::use(std::vector<neuron_t>&& inputs)
+	{
+		auto&& inp = inputs;
+		for (auto& l : layers)
+			inp = l.feed_forward(inp, activation_function);
+		last_output = inp;
+		return last_output;
+	}
+	
+	void perceptron::teach(const std::vector<neuron_t>& samples, double learning_rate)
+	{
+		auto it = layers.end() - 1;
+		auto&& errors = it->compute_errors(samples);
+		errors = (it--)->back_propagate(errors, deactivation_function, learning_rate);
+		for (; it != layers.begin() - 1; --it)
+			errors = it->back_propagate(errors, deactivation_function, learning_rate);
+	}
+}
