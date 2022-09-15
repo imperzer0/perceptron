@@ -11,7 +11,7 @@
 namespace neural
 {
 	perceptron::perceptron(
-			const std::initializer_list<size_t>& sizes, neuron_t min, neuron_t max,
+			const std::vector<size_t>& sizes, neuron_t min, neuron_t max,
 			neural_function activation_function, neural_function deactivation_function
 	) : activation_function(activation_function), deactivation_function(deactivation_function)
 	{
