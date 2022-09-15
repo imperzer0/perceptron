@@ -42,11 +42,6 @@ namespace neural
 		auto err_next = matrix_multiply_backward(weights, errors);
 		auto err_biases = matrix_multiply_backward(biases, errors);
 		
-		fprintf(stderr, "next = ");
-		print_vector(err_next, stderr);
-		fprintf(stderr, "biases = ");
-		print_vector(err_biases, stderr);
-		
 		correct_weights(weights, last_inputs, last_outputs, errors, deactivation_function, alfa);
 		correct_biases(biases, last_outputs, errors, deactivation_function, alfa);
 		
