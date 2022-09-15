@@ -34,9 +34,13 @@ namespace neural
 				neural_function activation_function, neural_function deactivation_function
 		);
 		
+		perceptron(const std::vector<struct core_data>& data, neural_function activation_function, neural_function deactivation_function);
+		
 		std::vector<neuron_t> use(std::vector<neuron_t>&& inputs);
 		
 		void teach(const std::vector<neuron_t>& samples, double learning_rate);
+		
+		std::vector<struct core_data> get_core_data();
 	};
 }
 

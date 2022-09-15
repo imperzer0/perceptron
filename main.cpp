@@ -43,6 +43,19 @@ int main()
 		neural::print_vector(perc.use({ 0.5, 0, 0 }));
 		neural::print_vector(perc.use({ 0, 0, 1 }));
 		
+		std::cout << "\n";
+		
+		{
+			neural::perceptron perc1(perc.get_core_data(), neural::sigm_activation, neural::sigm_deactivation);
+			
+			neural::print_vector(perc1.use({ 0.5, 0, 0.5 }));
+			neural::print_vector(perc1.use({ 0, 1, 0 }));
+			neural::print_vector(perc1.use({ 0.5, 0, 0 }));
+			neural::print_vector(perc1.use({ 0, 0, 1 }));
+		}
+		
+		std::cout << "\n";
+		
 		int c = getchar();
 		//		std::cout << " c = " << c << "\n\n";
 	}

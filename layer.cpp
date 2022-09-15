@@ -59,4 +59,6 @@ namespace neural
 		
 		return std::move(res);
 	}
+	
+	core_data layer::get_core_data() { return core_data{ .biases = biases, .weights = weights }; }
 }

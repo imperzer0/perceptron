@@ -20,8 +20,16 @@
 
 namespace neural
 {
+	struct core_data
+	{
+		std::vector<neuron_t> biases;
+		std::vector<std::vector<neuron_t >> weights;
+	};
+	
 	class layer
 	{
+		friend class perceptron;
+		
 		std::vector<neuron_t> biases;
 		std::vector<std::vector<neuron_t >> weights;
 		
@@ -39,6 +47,8 @@ namespace neural
 		std::vector<neuron_t> back_propagate(const std::vector<neuron_t>& errors, neural_function deactivation_function, double alfa);
 		
 		std::vector<neuron_t> compute_errors(const std::vector<neuron_t>& samples);
+		
+		core_data get_core_data();
 	};
 }
 

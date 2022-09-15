@@ -27,8 +27,21 @@ namespace neural
 		}
 	}
 	
+	perceptron::perceptron(const std::vector<struct core_data>& data, neural_function activation_function, neural_function deactivation_function)
+			: activation_function(activation_function), deactivation_function(deactivation_function)
+	{
+		assert(!data.empty());
+		
+		inputs_size = data[0].weights.size();
+		
+		for (auto& d : data)
+			layers.emplace_back(d.biases, d.weights);
+	}
+	
 	std::vector<neuron_t> perceptron::use(std::vector<neuron_t>&& inputs)
 	{
+		assert(inputs.size() == inputs_size);
+		
 		auto&& inp = inputs;
 		for (auto& l : layers)
 			inp = l.feed_forward(inp, activation_function);
@@ -38,10 +51,22 @@ namespace neural
 	
 	void perceptron::teach(const std::vector<neuron_t>& samples, double learning_rate)
 	{
+		assert(samples.size() == layers.back().biases.size());
+		
 		auto it = layers.end() - 1;
 		auto&& errors = it->compute_errors(samples);
 		errors = (it--)->back_propagate(errors, deactivation_function, learning_rate);
 		for (; it != layers.begin() - 1; --it)
 			errors = it->back_propagate(errors, deactivation_function, learning_rate);
+	}
+	
+	std::vector<struct core_data> perceptron::get_core_data()
+	{
+		std::vector<struct core_data> data;
+		
+		for (auto& l : layers)
+			data.emplace_back(std::move(l.get_core_data()));
+		
+		return std::move(data);
 	}
 }
