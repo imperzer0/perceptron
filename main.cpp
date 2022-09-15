@@ -2,14 +2,6 @@
 #include "perceptron.hpp"
 
 
-void print_vector(const std::vector<neural::neuron_t>& vec, std::ostream& ostream = std::cout)
-{
-	ostream << "( ";
-	for (auto& v : vec)
-		ostream << v << " ";
-	ostream << ")\n";
-}
-
 std::vector<neural::neuron_t> read_vector(size_t size, std::istream& istream = std::cin)
 {
 	decltype(read_vector(size)) vec;
@@ -25,31 +17,33 @@ std::vector<neural::neuron_t> read_vector(size_t size, std::istream& istream = s
 
 int main()
 {
-	neural::perceptron perc({ 2, 3, 1 }, -1.0, 1.0, neural::sigm_activation, neural::sigm_deactivation);
+	neural::perceptron perc({ 3, 3, 2 }, -1.0, 0.0, neural::sigm_activation, neural::sigm_deactivation);
+	
+	const double lr = 0.1;
 	
 	while (true)
 	{
 		for (size_t i = 0; i < 1000; ++i)
 		{
-			perc.use({ 1, 0 });
-			perc.teach({ 1 }, 0.1);
+			perc.use({ 0.5, 0, 0.5 });
+			perc.teach({ 0, 1 }, lr);
 			
-			perc.use({ 1, 1 });
-			perc.teach({ 0 }, 0.1);
+			perc.use({ 0, 1, 0 });
+			perc.teach({ 1, 1 }, lr);
 			
-			perc.use({ 0, 1 });
-			perc.teach({ 1 }, 0.1);
+			perc.use({ 0.5, 0, 0 });
+			perc.teach({ 0, 0.5 }, lr);
 			
-			perc.use({ 0, 0 });
-			perc.teach({ 0 }, 0.1);
+			perc.use({ 0, 0, 1 });
+			perc.teach({ 0, 1 }, lr);
 		}
 		
-		int c = getchar();
+		neural::print_vector(perc.use({ 0.5, 0, 0.5 }));
+		neural::print_vector(perc.use({ 0, 1, 0 }));
+		neural::print_vector(perc.use({ 0.5, 0, 0 }));
+		neural::print_vector(perc.use({ 0, 0, 1 }));
 		
-		print_vector(perc.use({ 1, 0 }));
-		print_vector(perc.use({ 1, 1 }));
-		print_vector(perc.use({ 0, 1 }));
-		print_vector(perc.use({ 0, 0 }));
+		int c = getchar();
 		//		std::cout << " c = " << c << "\n\n";
 	}
 	

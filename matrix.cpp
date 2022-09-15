@@ -5,8 +5,8 @@
 // Commercial usage must be agreed with the author of this comment.
 
 
-#include <cstddef>
 #include "matrix.hpp"
+#include <cstddef>
 
 
 namespace neural
@@ -66,9 +66,9 @@ namespace neural
 		return std::move(res);
 	}
 	
-	/// W(T) * I
-	/// 3x2 * 2x1 = 3x1
-	///  i          i
+	/// B(T) * I
+	/// 1x3 * 3x1 = 1x1
+	///  i  i  i    i    i
 	///            e1
 	/// b1 b2 b3 x e2 = r1: b1*e1 + b2*e2 + b3*e3
 	///            e3
@@ -113,5 +113,13 @@ namespace neural
 			B[j] += alfa * E[j] * deactivation_function(O[j]);
 		
 		return B;
+	}
+	
+	void print_vector(const std::vector<neural::neuron_t>& vec, FILE* ofile)
+	{
+		fprintf(ofile, "( ");
+		for (auto& v : vec)
+			fprintf(ofile, "%Lf ", v);
+		fprintf(ofile, ")\n");
 	}
 }

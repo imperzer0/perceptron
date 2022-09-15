@@ -42,6 +42,11 @@ namespace neural
 		auto err_next = matrix_multiply_backward(weights, errors);
 		auto err_biases = matrix_multiply_backward(biases, errors);
 		
+		fprintf(stderr, "next = ");
+		print_vector(err_next, stderr);
+		fprintf(stderr, "biases = ");
+		print_vector(err_biases, stderr);
+		
 		correct_weights(weights, last_inputs, last_outputs, errors, deactivation_function, alfa);
 		correct_biases(biases, last_outputs, errors, deactivation_function, alfa);
 		
@@ -55,10 +60,7 @@ namespace neural
 		std::vector<neuron_t> res = last_outputs;
 		
 		for (size_t i = 0; i < res.size(); ++i)
-		{
-			res[i] -= samples[i];
-			res[i] *= res[i];
-		}
+			res[i] = samples[i] - res[i];
 		
 		return std::move(res);
 	}

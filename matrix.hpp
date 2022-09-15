@@ -10,6 +10,7 @@
 
 #include <vector>
 #include <cassert>
+#include <cstdio>
 
 
 namespace neural
@@ -38,6 +39,8 @@ namespace neural
 			std::vector<neuron_t>& B, const std::vector<neuron_t>& O, const std::vector<neuron_t>& E,
 			neural_function deactivation_function, double alfa
 	);
+	
+	extern void print_vector(const std::vector<neural::neuron_t>& vec, FILE* ofile = stdout);
 }
 
 #endif //PERCEPTRON_MATRIX_HPP
