@@ -13,9 +13,46 @@
 
 namespace neural
 {
-	static constexpr neuron_t sigm_activation(neuron_t x) { return 1 / (1 + std::exp(-x)); }
+	static constexpr neuron_t sigm_activation(neuron_t x)
+	{
+		return 1 / (1 + std::exp(-x));
+	}
 	
-	static constexpr neuron_t sigm_deactivation(neuron_t x) { return x * (1 - x); }
+	static constexpr neuron_t sigm_deactivation(neuron_t x)
+	{
+		return sigm_activation(x) * (1 - sigm_activation(x));
+	}
+	
+	static constexpr neuron_t sigm_scaled_activation(neuron_t x)
+	{
+		return 3 / (2 * (1 + std::exp(-x))) - 0.5;
+	}
+	
+	static constexpr neuron_t sigm_scaled_deactivation(neuron_t x)
+	{
+		return sigm_scaled_activation(x) * (1 - sigm_scaled_activation(x));
+	}
+	
+	static constexpr neuron_t tanh_activation(neuron_t x)
+	{
+		return (std::exp(x) - std::exp(-x)) / (std::exp(x) + std::exp(-x));
+	}
+	
+	static constexpr neuron_t tanh_deactivation(neuron_t x)
+	{
+		neuron_t tmp = tanh_activation(x);
+		return 1 - tmp * tmp;
+	}
+	
+	static constexpr neuron_t swish_activation(neuron_t x)
+	{
+		return x * sigm_activation(x);
+	}
+	
+	static constexpr neuron_t swish_deactivation(neuron_t x)
+	{
+		return sigm_activation(x) + x * sigm_deactivation(x);
+	}
 	
 	class perceptron
 	{
