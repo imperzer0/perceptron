@@ -19,11 +19,11 @@ std::vector<neural::neuron_t> read_vector(size_t size, std::istream& istream = s
 #define _DEACTIVATION(name) neural::name##_deactivation
 #define DEACTIVATION(name) _DEACTIVATION(name)
 
-#define FUN swish
+#define FUN sigm
 
 int main()
 {
-	neural::perceptron perc({ 3, 3, 2 }, -4.0, 2.0, ACTIVATION(FUN), DEACTIVATION(FUN));
+	neural::perceptron perc({ 3, 23, 1 }, -2.0, 1.0, ACTIVATION(FUN), DEACTIVATION(FUN));
 	
 	const double lr = 0.1;
 	
@@ -31,22 +31,38 @@ int main()
 	{
 		for (size_t i = 0; i < 1000; ++i)
 		{
-			perc.use({ 0.5, 0, 0.5 });
-			perc.teach({ 0, 1 }, lr);
+			perc.use({ 1, 0, 0 });
+			perc.teach({ 1 }, lr);
 			
 			perc.use({ 0, 1, 0 });
-			perc.teach({ 1, 1 }, lr);
+			perc.teach({ 1 }, lr);
 			
-			perc.use({ 0.5, 0, 0 });
-			perc.teach({ 0, 0.5 }, lr);
+			perc.use({ 1, 1, 0 });
+			perc.teach({ 1 }, lr);
+			
+			perc.use({ 0, 0, 0 });
+			perc.teach({ 0 }, lr);
+			
+			perc.use({ 1, 0, 1 });
+			perc.teach({ 1 }, lr);
+			
+			perc.use({ 0, 1, 1 });
+			perc.teach({ 1 }, lr);
+			
+			perc.use({ 1, 1, 1 });
+			perc.teach({ 0 }, lr);
 			
 			perc.use({ 0, 0, 1 });
-			perc.teach({ 0, 1 }, lr);
+			perc.teach({ 1 }, lr);
 		}
 		
-		neural::print_vector(perc.use({ 0.5, 0, 0.5 }));
+		neural::print_vector(perc.use({ 1, 0, 0 }));
 		neural::print_vector(perc.use({ 0, 1, 0 }));
-		neural::print_vector(perc.use({ 0.5, 0, 0 }));
+		neural::print_vector(perc.use({ 1, 1, 0 }));
+		neural::print_vector(perc.use({ 0, 0, 0 }));
+		neural::print_vector(perc.use({ 1, 0, 1 }));
+		neural::print_vector(perc.use({ 0, 1, 1 }));
+		neural::print_vector(perc.use({ 1, 1, 1 }));
 		neural::print_vector(perc.use({ 0, 0, 1 }));
 		
 		std::cout << "\n";

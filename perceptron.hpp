@@ -20,7 +20,7 @@ namespace neural
 	
 	static constexpr neuron_t sigm_deactivation(neuron_t x)
 	{
-		return sigm_activation(x) * (1 - sigm_activation(x));
+		return x * (1 - x);
 	}
 	
 	static constexpr neuron_t sigm_scaled_activation(neuron_t x)
@@ -51,7 +51,7 @@ namespace neural
 	
 	static constexpr neuron_t swish_deactivation(neuron_t x)
 	{
-		return sigm_activation(x) + x * sigm_deactivation(x);
+		return sigm_activation(x) + x * sigm_activation(x) * (1 - sigm_activation(x));
 	}
 	
 	class perceptron
